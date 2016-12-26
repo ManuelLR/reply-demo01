@@ -65,7 +65,10 @@ def top_products_of_category(category_id, result_limit):
         "position": ai[6]
     } for ai in h]
 
-    res = json.dumps(products_dict)
+    res = json.dumps({
+        "product": products_dict,
+        "facebook_template": fb_template_product(h)
+    })
 
     return res
 
@@ -86,8 +89,44 @@ def product_search(name, result_limit):
         "description": ai[5]
     } for ai in h]
 
-    res = json.dumps(products_dict)
+    res = json.dumps({
+        "product": products_dict,
+        "facebook_template": fb_template_product(h)
+    })
 
+    return res
+
+
+def fb_template_product(products):
+    elements = [{
+        "title": ai[1],
+        "image_url": ai[2],
+        "item_url": ai[3],
+        "subtitle": ai[5],
+        "buttons": [
+            {
+                "type": "web_url",
+                "url": ai[3],
+                "title": "More Info"
+            },
+            {
+                "type": "element_share"
+            },
+            {
+                "type": "web_url",
+                "url": ai[4],
+                "title": "Buy !"
+            }
+        ],
+    } for ai in products]
+
+    res = {
+        "type": "template",
+        "payload": {
+            "template_type": "generic",
+            "elements": elements
+        }
+    }
     return res
 
 
