@@ -42,7 +42,10 @@ def all_categories():
         "description": ai[3],
     } for ai in h]
 
-    res = json.dumps(categories_dict)
+    res = json.dumps({
+        "categories": categories_dict,
+        "facebook_template": fb_template_category(h)
+    })
 
     return res
 
@@ -66,7 +69,7 @@ def top_products_of_category(category_id, result_limit):
     } for ai in h]
 
     res = json.dumps({
-        "product": products_dict,
+        "products": products_dict,
         "facebook_template": fb_template_product(h)
     })
 
@@ -90,10 +93,36 @@ def product_search(name, result_limit):
     } for ai in h]
 
     res = json.dumps({
-        "product": products_dict,
+        "products": products_dict,
         "facebook_template": fb_template_product(h)
     })
 
+    return res
+
+
+def fb_template_category(categories):
+
+    elements = [{
+        "title": ai[1],
+        "image_url": ai[2],
+        "subtitle": ai[3],
+        "buttons": [
+            {
+                "type": "postback",
+                "title": "View",
+                "payload": "button_category_" + str(ai[0])
+            }
+        ],
+    } for ai in categories]
+
+    res = {
+        "type": "template",
+        "payload": {
+            "template_type": "list",
+            "top_element_style": "large",
+            "elements": elements
+        }
+    }
     return res
 
 
@@ -101,7 +130,6 @@ def fb_template_product(products):
     elements = [{
         "title": ai[1],
         "image_url": ai[2],
-        "item_url": ai[3],
         "subtitle": ai[5],
         "buttons": [
             {
