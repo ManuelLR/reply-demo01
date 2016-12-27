@@ -72,7 +72,14 @@ def top_products_of_category(category_id, result_limit):
 
     res = json.dumps({
         "products": products_dict,
-        "facebook_template": fb_template_product(h)
+        "facebook_template": fb_template_product(h),
+        "buttons": [
+            {
+            "title": "Search by product name",
+            "type": "postback",
+            "payload": "search_by_name"
+            }
+        ]
     })
 
     return res
