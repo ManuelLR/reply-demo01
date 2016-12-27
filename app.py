@@ -32,7 +32,8 @@ def get_search():
 
 def all_categories():
     c = conn_db.cursor()
-    h = c.execute('SELECT id_category, name, image, description FROM category_table').fetchall()
+    h = c.execute('SELECT id_category, name, image, description FROM category_table '
+                  'ORDER BY name ASC').fetchall()
     c.close()
 
     categories_dict = [{
@@ -54,7 +55,8 @@ def top_products_of_category(category_id, result_limit):
     c = conn_db.cursor()
     h = c.execute('SELECT id_product, name, image, more_info, buy_link, description, position FROM product_table '
                   'INNER JOIN rel_category_product ON product_table.id_product = rel_category_product.product '
-                  'WHERE rel_category_product.category = ? AND rel_category_product.position <= ?'
+                  'WHERE rel_category_product.category = ? AND rel_category_product.position <= ? '
+                  'ORDER BY position'
                   , (category_id, result_limit)).fetchall()
     c.close()
 
