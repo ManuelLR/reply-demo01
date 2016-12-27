@@ -45,7 +45,7 @@ def all_categories():
 
     res = json.dumps({
         "categories": categories_dict,
-        "facebook_template": fb_template_category(h)
+        "facebook_template": fb_template_category(h),
     })
 
     return res
@@ -73,13 +73,6 @@ def top_products_of_category(category_id, result_limit):
     res = json.dumps({
         "products": products_dict,
         "facebook_template": fb_template_product(h),
-        "buttons": [
-            {
-            "title": "Search by product name",
-            "type": "postback",
-            "payload": "search_by_name"
-            }
-        ]
     })
 
     return res
@@ -129,7 +122,14 @@ def fb_template_category(categories):
         "payload": {
             "template_type": "list",
             "top_element_style": "large",
-            "elements": elements
+            "elements": elements,
+            "buttons": [
+                {
+                    "title": "Search by product name",
+                    "type": "postback",
+                    "payload": "search_by_name"
+                }
+            ]
         }
     }
     return res
